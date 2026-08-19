@@ -7,18 +7,30 @@ local modules = {
     Explorer = "/Explorer.lua",
 }
 
-function Loader.load()
+local function tableCount(tbl)
+    local count = 0
 
-    print("Loading", #modules, "modules.")
+    for _ in pairs(tbl) do
+        count += 1
+    end
+
+    return count
+end
+
+function Loader.load()
+    local count = tableCount(modules)
+
+    print("Loading", count, "modules.")
 
     local loaded = {}
 
     for library, path in pairs(modules) do
         local source = game:HttpGet(base .. path)
         loaded[library] = loadstring(source)()
+        print("Loaded", path)
     end
 
-    print("Loaded", #modules, "modules.")
+    print("Finished loading", count, "modules.")
 
     return loaded
 
