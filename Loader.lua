@@ -18,6 +18,7 @@ local function tableCount(tbl)
 end
 
 local function createLoaderUi()
+    print("Creating loader ui.")
     local Loader = Instance.new("ScreenGui")
     local Window = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
@@ -69,9 +70,30 @@ local function createLoaderUi()
     }
 end
 
+local function createBlurSafely()
+    print("Creating devKit blurEffect.")
+    local blurEffect = Instance.new("BlurEffect")
+    blurEffect.Name = "devKit"
+    blurEffect.Enabled = false
+
+    local childAdded = getconnections(game.Lighting.ChildAdded)
+
+    for i,v in childAdded do
+        v:Disable()
+    end
+
+    blurEffect.Parent = game.Lighting
+
+    for i,v in childAdded do
+        v:Enable()
+    end
+end  
+
 function Loader.load()
     local count = tableCount(modules)
     local ui = createLoaderUi()
+
+    createBlurSafely()
 
     print("Loading", count, "modules.")
 
@@ -86,9 +108,13 @@ function Loader.load()
         print("Loaded", path)
     end
 
-    ui.Gui:Destroy()
-
     print("Finished loading", count, "modules.")
+
+    ui.Status.Text = "Finished loading ".. count.. " modules."
+
+    task.delay(0.5, function()
+        ui.Gui:Destroy()
+    end)
 
     return loaded
 
