@@ -18,7 +18,7 @@ local function tableCount(tbl)
 end
 
 function Loader.load()
-    local count = tableCount(modules)
+    local count = table.getn(modules)
 
     print("Loading", count, "modules.")
 
