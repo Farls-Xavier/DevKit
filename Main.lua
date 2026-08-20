@@ -1,5 +1,8 @@
+<<<<<<< HEAD
 -- Main.lua
 
+=======
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
 local reference = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
 local function Load(path)

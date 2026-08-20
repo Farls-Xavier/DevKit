@@ -20,6 +20,7 @@ function API.Load(Status)
     Status("Roblox version: " .. robloxVersion)
     Status("Getting Roblox API...")
 
+<<<<<<< HEAD
     local apiPath = "DevKit/API/rbx_api.json"
     local rawAPI
 
@@ -43,6 +44,16 @@ function API.Load(Status)
 
     local api = Services.HttpService:JSONDecode(rawAPI)
 
+=======
+    local rawAPI = httpget("http://setup.roblox.com/" .. robloxVersion .. "-API-Dump.json")
+
+    Status("Decoding Roblox API...")
+
+    local api = Services.HttpService:JSONDecode(rawAPI)
+
+    Status("Parsing Roblox classes...")
+
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
     local classes = {}
 
     for _, class in pairs(api.Classes) do
@@ -65,6 +76,10 @@ function API.Load(Status)
             end
         end
 
+<<<<<<< HEAD
+=======
+        -- Class members
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
         for _, member in pairs(class.Members) do
 
             local newMember = {}
@@ -74,6 +89,10 @@ function API.Load(Status)
             newMember.Security = member.Security
             newMember.Tags = {}
 
+<<<<<<< HEAD
+=======
+            -- Member tags
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
             if member.Tags then
                 for _, tag in pairs(member.Tags) do
                     newMember.Tags[tag] = true
@@ -91,11 +110,23 @@ function API.Load(Status)
             elseif member.MemberType == "Function" then
 
                 newMember.Parameters = {}
+<<<<<<< HEAD
                 newMember.ReturnType = member.ReturnType and member.ReturnType.Name
 
                 if member.Parameters then
                     for _, parameter in pairs(member.Parameters) do
                         table.insert(newMember.Parameters, {Name = parameter.Name, Type = parameter.Type.Name})
+=======
+                newMember.ReturnType = member.ReturnType
+                    and member.ReturnType.Name
+
+                if member.Parameters then
+                    for _, parameter in pairs(member.Parameters) do
+                        table.insert(newMember.Parameters, {
+                            Name = parameter.Name,
+                            Type = parameter.Type.Name
+                        })
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
                     end
                 end
 
@@ -107,7 +138,14 @@ function API.Load(Status)
 
                 if member.Parameters then
                     for _, parameter in pairs(member.Parameters) do
+<<<<<<< HEAD
                         table.insert(newMember.Parameters, {Name = parameter.Name, Type = parameter.Type.Name})
+=======
+                        table.insert(newMember.Parameters, {
+                            Name = parameter.Name,
+                            Type = parameter.Type.Name
+                        })
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
                     end
                 end
 
@@ -121,7 +159,14 @@ function API.Load(Status)
 
                 if member.Parameters then
                     for _, parameter in pairs(member.Parameters) do
+<<<<<<< HEAD
                         table.insert(newMember.Parameters, {Name = parameter.Name, Type = parameter.Type.Name})
+=======
+                        table.insert(newMember.Parameters, {
+                            Name = parameter.Name,
+                            Type = parameter.Type.Name
+                        })
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
                     end
                 end
 
@@ -133,6 +178,11 @@ function API.Load(Status)
         classes[class.Name] = newClass
     end
 
+<<<<<<< HEAD
+=======
+    Status("Building class inheritance...")
+
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
     -- Convert superclass names into actual class references.
     for _, class in pairs(classes) do
         if class.Superclass then
@@ -140,6 +190,11 @@ function API.Load(Status)
         end
     end
 
+<<<<<<< HEAD
+=======
+    Status("Parsing Roblox enums...")
+
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
     local enums = {}
 
     for _, enum in pairs(api.Enums) do
@@ -158,13 +213,25 @@ function API.Load(Status)
 
         for _, item in pairs(enum.Items) do
 
+<<<<<<< HEAD
             table.insert(newEnum.Items, {Name = item.Name, Value = item.Value})
+=======
+            table.insert(newEnum.Items, {
+                Name = item.Name,
+                Value = item.Value
+            })
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
 
         end
 
         enums[enum.Name] = newEnum
     end
 
+<<<<<<< HEAD
+=======
+    Status("Building member lookup...")
+
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
     local function GetMember(className, memberType)
 
         local class = classes[className]
@@ -197,7 +264,11 @@ function API.Load(Status)
         return result
     end
 
+<<<<<<< HEAD
     Status("Got Roblox API.")
+=======
+    Status("Roblox API ready.")
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
 
     return {
         Version = robloxVersion,
@@ -212,4 +283,8 @@ function API.Load(Status)
     }
 end
 
+<<<<<<< HEAD
 return API
+=======
+return API
+>>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
