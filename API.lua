@@ -22,6 +22,12 @@ function API.Load(Status)
 
     local rawAPI = httpget("http://setup.roblox.com/" .. robloxVersion .. "-API-Dump.json")
     local api = Services.HttpService:JSONDecode(rawAPI)
+
+    return {
+        Version = robloxVersion,
+        Raw = rawAPI,
+        Data = api
+    }
     
 end
 
