@@ -1,35 +1,32 @@
+local Services = setmetatable({}, {
+    __index = function(_, service)
+        return game:GetService(service)
+    end
+}) 
+
 local Loader = {}
 
-local base = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
+local url = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
 local modules = {
     Library = "/Library.lua",
     Explorer = "/Explorer.lua",
+    API = "/API.lua"
 }
 
-local function tableCount(tbl)
-    local count = 0
+local function createUi()
 
-    for _ in pairs(tbl) do
-        count += 1
-    end
-
-    return count
-end
-
-local function createLoaderUi()
-    print("Creating loader ui.")
-    local Loader = Instance.new("ScreenGui")
+    local LoaderSui = Instance.new("ScreenGui")
     local Window = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
     local Status = Instance.new("TextLabel")
     local Window_UICorner = Instance.new("UICorner")
 
-    Loader.Name = "DevKitLoader"
-    Loader.Parent = game:GetService("CoreGui")
+    LoaderSui.Name = "DevKitLoader"
+    LoaderSui.Parent = Services.CoreGui
 
     Window.Name = "Window"
-    Window.Parent = Loader
+    Window.Parent = LoaderSui
     Window.BackgroundColor3 = Color3.fromRGB(11, 13, 16)
     Window.BackgroundTransparency = 0.03
     Window.BorderSizePixel = 0
@@ -62,61 +59,82 @@ local function createLoaderUi()
     Window_UICorner.CornerRadius = UDim.new(0, 1)
     Window_UICorner.Parent = Window
 
-    return {
-        Gui = Loader,
-        Window = Window,
-        Title = Title,
-        Status = Status,
-    }
+    local ui = {}
+
+    ui.screenGui = LoaderSui
+    ui.window = Window
+    ui.title = Title
+    ui.status = Status
+
+    function ui:SetStatus(s)
+        ui.status.Text = s
+    end
+
+    function ui:Destroy()
+        ui.screenGui:Destroy()
+    end
+
+    return ui
+
 end
 
-local function createBlurSafely()
-    print("Creating devKit blurEffect.")
+local function createBlur()
     local blurEffect = Instance.new("BlurEffect")
     blurEffect.Name = "devKit"
     blurEffect.Enabled = false
 
-    local childAdded = getconnections(game.Lighting.ChildAdded)
+    local childAdded = getconnections(Services.Lighting.ChildAdded)
 
-    for i,v in childAdded do
-        v:Disable()
+    if #childAdded == 0 then
+        blurEffect.Parent = Services.Lighting
+    else
+        for _, v in childAdded do
+            v:Disable()
+        end
+
+        blurEffect.Parent = Services.Lighting
+
+        for _, v in childAdded do
+            v:Enable()
+        end
     end
 
-    blurEffect.Parent = game.Lighting
+    return blurEffect
+end
 
-    for i,v in childAdded do
-        v:Enable()
-    end
-end  
+local function loadModule(path)
+
+    local source = httpget(url .. path)
+    return loadstring(source)()
+
+end
 
 function Loader.load()
-    local count = tableCount(modules)
-    local ui = createLoaderUi()
 
-    createBlurSafely()
+    local ui = createUi()
+    local blur = createBlur()
 
-    print("Loading", count, "modules.")
+    local Loaded = {
+        BlurEffect = blur,
+        Services = Services
+    }
 
-    local loaded = {}
+    ui:SetStatus("Loading Library...")
+    Loaded.Library = loadModule(modules.Library)
 
-    for library, path in pairs(modules) do
-        ui.Status.Text = "Loading " .. path
+    ui:SetStatus("Loading Explorer...")
+    Loaded.Explorer = loadModule(modules.Explorer)
 
-        local source = game:HttpGet(base .. path)
-        loaded[library] = loadstring(source)()
+    ui:SetStatus("Loading Roblox API...")
+    loadModule(modules.API).Load()
 
-        print("Loaded", path)
-    end
+    ui:SetStatus("Done loading")
 
-    print("Finished loading", count, "modules.")
-
-    ui.Status.Text = "Finished loading ".. count.. " modules."
-
-    task.delay(0.5, function()
-        ui.Gui:Destroy()
+    task.delay(.5, function()
+        ui:Destroy()
     end)
 
-    return loaded
+    return Loaded
 
 end
 
