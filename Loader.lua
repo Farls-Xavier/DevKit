@@ -1,6 +1,6 @@
 local Loader = {}
 
-local test_delay = 1
+local test_delay = 0.75
 
 local url = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
