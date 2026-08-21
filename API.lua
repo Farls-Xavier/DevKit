@@ -27,7 +27,7 @@ function API.Load(Status)
         local cache = Services.HttpService:JSONDecode(readfile(apiPath))
 
         if cache.Version == robloxVersion then
-            Status("Got Roblox API")
+            Status("Got Local Roblox API")
             rawAPI = cache.Data
         end
     end

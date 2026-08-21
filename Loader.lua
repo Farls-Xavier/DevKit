@@ -18,17 +18,17 @@ local Services = setmetatable({}, {
 
 local function createUi()
 
-    local LoaderSui = Instance.new("ScreenGui")
+    local Loadersgui = Instance.new("ScreenGui")
     local Window = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
     local Status = Instance.new("TextLabel")
     local Window_UICorner = Instance.new("UICorner")
 
-    LoaderSui.Name = "DevKitLoader"
-    LoaderSui.Parent = Services.CoreGui
+    Loadersgui.Name = "DevKitLoader"
+    Loadersgui.Parent = Services.CoreGui
 
     Window.Name = "Window"
-    Window.Parent = LoaderSui
+    Window.Parent = Loadersgui
     Window.BackgroundColor3 = Color3.fromRGB(11, 13, 16)
     Window.BackgroundTransparency = 0.03
     Window.BorderSizePixel = 0
@@ -63,7 +63,7 @@ local function createUi()
 
     local ui = {}
 
-    ui.screenGui = LoaderSui
+    ui.screenGui = Loadersgui
     ui.window = Window
     ui.title = Title
     ui.status = Status

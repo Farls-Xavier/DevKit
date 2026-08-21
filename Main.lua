@@ -9,9 +9,15 @@ end
 
 local Loaded = Load("/Loader.lua").load()
 
--- Retrieve all the loaded stuff I needed ok!!!
-
 local Library = Loaded.Library
 local Explorer = Loaded.Explorer
 local Services = Loaded.Services
 local BlurEffect = Loaded.BlurEffect
+
+-- Do a little test
+
+BlurEffect.Enabled = true
+
+task.wait(.1)
+
+BlurEffect.Enabled = false
