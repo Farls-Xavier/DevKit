@@ -1,6 +1,5 @@
 local Library = {}
 
-<<<<<<< HEAD
 local reference = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
 local function Load(path)
@@ -8,8 +7,6 @@ local function Load(path)
     return loadstring(source)()
 end
 
-=======
->>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
 Library.IconMap = {
     MapId = 135148380892747,
 
@@ -335,7 +332,6 @@ Library.IconMap = {
             }
 }
 
-<<<<<<< HEAD
 Library.MiscIconMap = {
 	MapId = 6511490623,
 
@@ -390,8 +386,6 @@ Library.MiscIconMap = {
 	}
 }
 
-=======
->>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
 function Library:GetIcon(iconName)
     local index = self.IconMap.Icons[iconName]
 

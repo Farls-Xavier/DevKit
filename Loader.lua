@@ -114,15 +114,12 @@ function Loader.load()
     local ui = createUi()
     local blur = createBlur()
 
-<<<<<<< HEAD
     if not isfolder("DevKit") then
         ui:SetStatus("Creating workspace.")
         makefolder("DevKit")
         makefolder("DevKit/API")
     end
 
-=======
->>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
     local Loaded = {
         BlurEffect = blur,
         Services = Services
@@ -151,8 +148,4 @@ function Loader.load()
 
 end
 
-<<<<<<< HEAD
 return Loader
-=======
-return Loader
->>>>>>> 0e52f6d3bc1025b22727651e2555bba4bf450011
