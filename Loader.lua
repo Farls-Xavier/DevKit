@@ -1,5 +1,7 @@
 local Loader = {}
 
+local test_delay = 1
+
 local url = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
 local modules = {
@@ -68,6 +70,7 @@ local function createUi()
 
     function ui:SetStatus(s)
         ui.status.Text = s
+        task.wait(test_delay)
     end
 
     function ui:Destroy()
