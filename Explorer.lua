@@ -1,6 +1,6 @@
 local Explorer = {}
 
-function Explorer.new()
+function Explorer.new(RobloxAPI)
     local self = {}
     return self
 end
