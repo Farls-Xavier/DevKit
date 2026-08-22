@@ -220,6 +220,8 @@ function Explorer.new(Loaded)
         objectName.Text = object.Name
         new_node.Name = object:GetFullName()
         new_node.Visible = true
+
+        new_node.Parent = self.ExplorerScrolling
     end
 
     for i,v in game:GetChildren() do
