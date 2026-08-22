@@ -10,4 +10,10 @@ end
 local Loaded = Load("/Loader.lua").load()
 
 local API = Loaded.API
-local Explorer = Loaded.Explorer.new(Loaded)
+
+local Library = Loaded.Library
+local Explorer = Loaded.Explorer
+local Services = Loaded.Services
+local BlurEffect = Loaded.BlurEffect
+
+local explorer = Explorer.new(Loaded)

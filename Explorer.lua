@@ -9,6 +9,8 @@ function Explorer.new(Loaded)
     self.Library = Loaded.Library
     self.Services = Loaded.Services
 
+    self.Nodes = {}
+
     self.Roots = { -- add more if i need ill make a config for this too
         "Workspace",
         "Players",
@@ -39,7 +41,6 @@ function Explorer.new(Loaded)
         self.ObjectName = Instance.new("TextLabel")
         self.ObjectName_UIPadding = Instance.new("UIPadding")
         self.ObjectImage = Instance.new("ImageLabel")
-        self.UICorner = Instance.new("UICorner")
         self.Topbar = Instance.new("Frame")
         self.Topbar_Searchbar = Instance.new("TextBox")
         self.Searchbar_UICorner = Instance.new("UICorner")
@@ -129,9 +130,6 @@ function Explorer.new(Loaded)
         self.ObjectImage.ImageRectOffset = Vector2.new(416, 512)
         self.ObjectImage.ImageRectSize = Vector2.new(32, 32)
         self.ObjectImage.ScaleType = Enum.ScaleType.Crop
-
-        self.UICorner.CornerRadius = UDim.new(0, 1)
-        self.UICorner.Parent = self.Template_Node
 
         self.Topbar.Name = "Topbar"
         self.Topbar.Parent = self.Window
@@ -226,23 +224,32 @@ function Explorer.new(Loaded)
         node.ObjectImage.ImageRectSize = icon.ImageRectSize
 
         node.MouseEnter:Connect(function()
-            TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = .15}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
+            TweenService:Create(node, TweenInfo.new(.1), {BackgroundTransparency = .15}):Play()
+            TweenService:Create(node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
         end)
 
         node.MouseLeave:Connect(function()
-            TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = 1}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(139, 147, 161)}):Play()
+            TweenService:Create(node, TweenInfo.new(.1), {BackgroundTransparency = 1}):Play()
+            TweenService:Create(node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(139, 147, 161)}):Play()
         end)
+
+        self.Nodes[object] = node
 
         return node
     end
 
-    for i,v in ipairs(game:GetChildren()) do
-        if table.find(self.Roots, v.Name) then
-            self:CreateNode(v)
+    for _, rootName in pairs(self.Roots) do
+        local object = game:FindFirstChild(rootName)
+
+        if object then
+            self:CreateNode(object)
         end
     end
+
+    local Nil_Instances = Instance.new("Folder")
+    Nil_Instances.Name = "Nil Instances"
+
+    self:CreateNode(Nil_Instances)
 
     return self
 end
