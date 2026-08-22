@@ -20,11 +20,12 @@ function Explorer.new(API, Library)
     self.Window.Position = UDim2.fromOffset(100, 100)
     self.Window.Size = UDim2.fromOffset(350, 500)
 
-    function self:CreateNode(instance, depth)
+    function self:CreateNode(instance, depth, y)
         local node = Instance.new("Frame")
         node.Name = instance.Name
         node.Parent = self.Window
         node.BackgroundTransparency = 1
+        node.Position = UDim2.fromOffset(0, y)
         node.Size = UDim2.new(1, 0, 0, 20)
 
         local icon = Instance.new("ImageLabel")
@@ -50,8 +51,8 @@ function Explorer.new(API, Library)
         return node
     end
 
-    self:CreateNode(workspace, 0)
-    self:CreateNode(workspace.CurrentCamera, 1)
+    self:CreateNode(workspace, 0, 0)
+    self:CreateNode(workspace.CurrentCamera, 1, 20)
 
     return self
 end
