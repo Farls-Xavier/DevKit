@@ -15,8 +15,8 @@ Library.IconMap = {
     MapId = 135148380892747,
 
     IconSize = 32,
-    Columns = 16,
-    Rows = 16,
+    Width = 18,
+    Height = 18,
 
     Icons = {
         Accessory = 1,
@@ -398,8 +398,10 @@ function Library:GetIcon(iconName)
     end
 
     local zeroIndex = index - 1
-    local column = zeroIndex % self.IconMap.Columns
-    local row = math.floor(zeroIndex / self.IconMap.Columns)
+
+    -- Roblox's sheet is 16 icons wide.
+    local column = zeroIndex % 16
+    local row = math.floor(zeroIndex / 16)
 
     return {
         Image = "rbxassetid://" .. self.IconMap.MapId,
@@ -414,12 +416,45 @@ function Library:GetIcon(iconName)
     }
 end
 
-function Library:SetIcon(imageLabel, iconName)
-    local iconSettings = self:GetIcon(iconName)
+function Library:GetMiscIcon(iconName)
+    local index = self.MiscIconMap.Icons[iconName]
 
-    imageLabel.Image = iconSettings.Image
-    imageLabel.ImageRectSize = iconSettings.ImageRectSize
-    imageLabel.ImageRectOffset = iconSettings.ImageRectOffset
+    if not index then
+        index = self.MiscIconMap.Icons.Empty
+    end
+
+    local zeroIndex = index - 1
+
+    local column = zeroIndex % 16
+    local row = math.floor(zeroIndex / 16)
+
+    return {
+        Image = "rbxassetid://" .. self.MiscIconMap.MapId,
+        ImageRectOffset = Vector2.new(
+            column * self.MiscIconMap.IconSize,
+            row * self.MiscIconMap.IconSize
+        ),
+        ImageRectSize = Vector2.new(
+            self.MiscIconMap.IconSize,
+            self.MiscIconMap.IconSize
+        )
+    }
+end
+
+function Library:SetIcon(imageLabel, iconName)
+    local icon = self:GetIcon(iconName)
+
+    imageLabel.Image = icon.Image
+    imageLabel.ImageRectOffset = icon.ImageRectOffset
+    imageLabel.ImageRectSize = icon.ImageRectSize
+end
+
+function Library:SetMiscIcon(imageLabel, iconName)
+    local icon = self:GetMiscIcon(iconName)
+
+    imageLabel.Image = icon.Image
+    imageLabel.ImageRectOffset = icon.ImageRectOffset
+    imageLabel.ImageRectSize = icon.ImageRectSize
 end
 
 return Library
