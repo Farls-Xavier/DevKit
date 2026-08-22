@@ -2,15 +2,6 @@
 
 local Library = {}
 
-local reference = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
-
-local function Load(path)
-    
-    local source = game:HttpGet(reference .. path)
-    return loadstring(source)()
-
-end
-
 Library.IconMap = {
     MapId = 135148380892747,
 

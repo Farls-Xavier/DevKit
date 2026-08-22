@@ -16,7 +16,7 @@ local Explorer = Loaded.Explorer
 local Services = Loaded.Services
 local BlurEffect = Loaded.BlurEffect
 
-Explorer.new(API, Library)
+Explorer.new(Loaded)
 
 -- Do a little test
 
