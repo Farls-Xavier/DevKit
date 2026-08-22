@@ -15,6 +15,9 @@ Library.IconMap = {
     MapId = 135148380892747,
 
     IconSize = 32,
+    Columns = 18,
+    Rows = 18,
+
     Width = 18,
     Height = 18,
 
@@ -393,44 +396,30 @@ Library.MiscIconMap = {
 function Library:GetIcon(iconName)
     local map = self.IconMap
 
-    local index = map.Icons[iconName]
-
-    if not index then
-        index = map.Icons.Placeholder
-    end
-
+    local index = map.Icons[iconName] or map.Icons.Class
     index -= 1
 
-    local column = index % map.Height
-    local row = math.floor(index / map.Height)
+    local column = index % map.Columns
+    local row = math.floor(index / map.Columns)
 
     return {
-        Image = map.MapId,
-
-        ImageRectOffset = Vector2.new(
-            column * map.IconSize,
-            row * map.IconSize
-        ),
-
-        ImageRectSize = Vector2.new(
-            map.IconSize,
-            map.IconSize
-        )
+        Image = "rbxassetid://" .. map.MapId,
+        ImageRectOffset = Vector2.new(column * map.IconSize, row * map.IconSize),
+        ImageRectSize = Vector2.new(map.IconSize, map.IconSize)
     }
 end
 
 function Library:SetIcon(imageLabel, iconName)
-    local map = self.IconMap
-    local index = (map.Icons[iconName] or map.Icons.Placeholder) - 1
+    local icon = self:GetIcon(iconName)
 
     imageLabel.BackgroundTransparency = 1
-    imageLabel.Image = map.MapId
-    imageLabel.ImageRectSize = Vector2.new(map.IconSize, map.IconSize)
-    imageLabel.ImageRectOffset = Vector2.new(
-        map.IconSize * (index % map.Height),
-        map.IconSize * math.floor(index / map.Height)
+    imageLabel.Image = icon.Image
+    imageLabel.ImageRectOffset = icon.ImageRectOffset
+    imageLabel.ImageRectSize = icon.ImageRectSize
+    imageLabel.Size = UDim2.fromOffset(
+        self.IconMap.Width,
+        self.IconMap.Height
     )
-    imageLabel.Size = UDim2.fromOffset(map.Width, map.Height)
     imageLabel.ScaleType = Enum.ScaleType.Crop
 end
 

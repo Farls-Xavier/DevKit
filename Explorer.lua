@@ -34,8 +34,6 @@ function Explorer.new(API, Library)
 
         self.Library:SetIcon(icon, instance.ClassName)
 
-        self.Library:SetIcon(icon, instance.ClassName)
-
         local name = Instance.new("TextLabel")
         name.Name = "Name"
         name.Parent = node
