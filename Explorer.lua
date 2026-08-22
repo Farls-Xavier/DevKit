@@ -50,6 +50,9 @@ function Explorer.new(API, Library)
         return node
     end
 
+    self:CreateNode(workspace, 0)
+    self:CreateNode(workspace.CurrentCamera, 1)
+
     return self
 end
 
