@@ -397,46 +397,15 @@ function Library:GetIcon(iconName)
         index = self.IconMap.Icons.Class
     end
 
-    local zeroIndex = index - 1
-
-    -- Roblox's sheet is 16 icons wide.
-    local column = zeroIndex % 16
-    local row = math.floor(zeroIndex / 16)
-
     return {
-        Image = "rbxassetid://" .. self.IconMap.MapId,
-        ImageRectOffset = Vector2.new(
-            column * self.IconMap.IconSize,
-            row * self.IconMap.IconSize
-        ),
+        Image = self.IconMap.MapId,
         ImageRectSize = Vector2.new(
-            self.IconMap.IconSize,
-            self.IconMap.IconSize
-        )
-    }
-end
-
-function Library:GetMiscIcon(iconName)
-    local index = self.MiscIconMap.Icons[iconName]
-
-    if not index then
-        index = self.MiscIconMap.Icons.Empty
-    end
-
-    local zeroIndex = index - 1
-
-    local column = zeroIndex % 16
-    local row = math.floor(zeroIndex / 16)
-
-    return {
-        Image = "rbxassetid://" .. self.MiscIconMap.MapId,
-        ImageRectOffset = Vector2.new(
-            column * self.MiscIconMap.IconSize,
-            row * self.MiscIconMap.IconSize
+            self.IconMap.IconSizeX,
+            self.IconMap.IconSizeY
         ),
-        ImageRectSize = Vector2.new(
-            self.MiscIconMap.IconSize,
-            self.MiscIconMap.IconSize
+        ImageRectOffset = Vector2.new(
+            self.IconMap.IconSizeX * index,
+            0
         )
     }
 end
@@ -445,16 +414,8 @@ function Library:SetIcon(imageLabel, iconName)
     local icon = self:GetIcon(iconName)
 
     imageLabel.Image = icon.Image
-    imageLabel.ImageRectOffset = icon.ImageRectOffset
     imageLabel.ImageRectSize = icon.ImageRectSize
-end
-
-function Library:SetMiscIcon(imageLabel, iconName)
-    local icon = self:GetMiscIcon(iconName)
-
-    imageLabel.Image = icon.Image
     imageLabel.ImageRectOffset = icon.ImageRectOffset
-    imageLabel.ImageRectSize = icon.ImageRectSize
 end
 
 return Library
