@@ -26,6 +26,8 @@ function Explorer.new(Loaded)
         "TextChatService",
     }
 
+    local TweenService = self.Services.TweenService
+
     -- Developed carpal tunnel doing this i swear
     do 
         self.ScreenGui = Instance.new("ScreenGui")
@@ -209,23 +211,34 @@ function Explorer.new(Loaded)
     end
 
     function self:CreateNode(object)
-        local new_node = self.Template_Node:Clone()
-        local objectName = new_node.ObjectName
-        local objectImage = new_node.ObjectImage
+        local node = self.Template_Node:Clone()
+
+        node.Name = object:GetFullName()
+        node.Visible = true
+        node.Parent = self.ExplorerScrolling
+
+        node.ObjectName.Text = object.Name
 
         local icon = self.Library:GetIcon(object.ClassName)
-        objectImage.Image = icon.Image
-        objectImage.ImageRectSize = icon.ImageRectSize
-        objectImage.ImageRectOffset = icon.ImageRectOffset
 
-        objectName.Text = object.Name
-        new_node.Name = object:GetFullName()
-        new_node.Visible = true
+        node.ObjectImage.Image = icon.Image
+        node.ObjectImage.ImageRectOffset = icon.ImageRectOffset
+        node.ObjectImage.ImageRectSize = icon.ImageRectSize
 
-        new_node.Parent = self.ExplorerScrolling
+        node.MouseEnter:Connect(function()
+            TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = .15}):Play()
+            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(230, 233, 239)})
+        end)
+
+        node.MouseLeave:Connect(function()
+            TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = 1}):Play()
+            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(139, 147, 161)})
+        end)
+
+        return node
     end
 
-    for i,v in game:GetChildren() do
+    for i,v in ipairs(game:GetChildren()) do
         if table.find(self.Roots, v.Name) then
             self:CreateNode(v)
         end
