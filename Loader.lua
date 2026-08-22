@@ -72,7 +72,7 @@ local function createUi()
 
     function ui:SetStatus(s)
         ui.status.Text = s
-        task.wait(test_delay)
+        --task.wait(test_delay)
     end
 
     function ui:Destroy()

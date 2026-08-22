@@ -63,6 +63,7 @@ function Explorer.new(Loaded)
         self.ExplorerScrolling.Name = "ExplorerScrolling"
         self.ExplorerScrolling.Parent = self.Window
         self.ExplorerScrolling.Active = true
+        self.ExplorerScrolling.AutomaticCanvasSize = Enum.AutomaticSize.XY
         self.ExplorerScrolling.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
         self.ExplorerScrolling.BackgroundTransparency = 1.000
         self.ExplorerScrolling.BorderColor3 = Color3.fromRGB(0, 0, 0)
@@ -225,7 +226,9 @@ function Explorer.new(Loaded)
     end
 
     for i,v in game:GetChildren() do
-        self:CreateNode(v)
+        if table.find(self.Roots, v.Name) then
+            self:CreateNode(v)
+        end
     end
 
     return self
