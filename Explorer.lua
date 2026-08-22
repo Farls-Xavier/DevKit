@@ -227,12 +227,12 @@ function Explorer.new(Loaded)
 
         node.MouseEnter:Connect(function()
             TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = .15}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(230, 233, 239)})
+            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
         end)
 
         node.MouseLeave:Connect(function()
             TweenService:Create(node, TweenInfo.new(.15), {BackgroundTransparency = 1}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(139, 147, 161)})
+            TweenService:Create(node.ObjectName, TweenInfo.new(.15), {TextColor3 = Color3.fromRGB(139, 147, 161)}):Play()
         end)
 
         return node

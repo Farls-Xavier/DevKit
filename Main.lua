@@ -10,18 +10,4 @@ end
 local Loaded = Load("/Loader.lua").load()
 
 local API = Loaded.API
-
-local Library = Loaded.Library
-local Explorer = Loaded.Explorer
-local Services = Loaded.Services
-local BlurEffect = Loaded.BlurEffect
-
-Explorer.new(Loaded)
-
--- Do a little test
-
-BlurEffect.Enabled = true
-
-task.wait(.1)
-
-BlurEffect.Enabled = false
+local Explorer = Loaded.Explorer.new(Loaded)
