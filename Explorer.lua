@@ -207,8 +207,23 @@ function Explorer.new(Loaded)
         self.Window_UICorner.Parent = self.Window
     end
 
-    function self:CreateNode()
-        
+    function self:CreateNode(object)
+        local new_node = self.Template_Node:Clone()
+        local objectName = new_node.ObjectName
+        local objectImage = new_node.ObjectImage
+
+        local icon = self.Library:GetIcon(object.ClassName)
+        objectImage.Image = icon.Image
+        objectImage.ImageRectSize = icon.ImageRectSize
+        objectImage.ImageRectOffset = icon.ImageRectOffset
+
+        objectName.Text = object.Name
+        new_node.Name = object:GetFullName()
+        new_node.Visible = true
+    end
+
+    for i,v in game:GetChildren() do
+        self:CreateNode(v)
     end
 
     return self
