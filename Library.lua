@@ -394,11 +394,10 @@ function Library:GetIcon(iconName)
     local index = self.IconMap.Icons[iconName]
 
     if not index then
-        return self.IconMap.Icons.Class
+        index = self.IconMap.Icons.Class
     end
 
     local zeroIndex = index - 1
-
     local column = zeroIndex % self.IconMap.Columns
     local row = math.floor(zeroIndex / self.IconMap.Columns)
 
@@ -411,7 +410,7 @@ function Library:GetIcon(iconName)
         ImageRectSize = Vector2.new(
             self.IconMap.IconSize,
             self.IconMap.IconSize
-        ),
+        )
     }
 end
 
