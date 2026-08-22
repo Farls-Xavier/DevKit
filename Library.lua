@@ -391,31 +391,47 @@ Library.MiscIconMap = {
 }
 
 function Library:GetIcon(iconName)
-    local index = self.IconMap.Icons[iconName]
+    local map = self.IconMap
+
+    local index = map.Icons[iconName]
 
     if not index then
-        index = self.IconMap.Icons.Class
+        index = map.Icons.Placeholder
     end
 
+    index -= 1
+
+    local column = index % map.Height
+    local row = math.floor(index / map.Height)
+
     return {
-        Image = self.IconMap.MapId,
-        ImageRectSize = Vector2.new(
-            self.IconMap.IconSizeX,
-            self.IconMap.IconSizeY
-        ),
+        Image = map.MapId,
+
         ImageRectOffset = Vector2.new(
-            self.IconMap.IconSizeX * index,
-            0
+            column * map.IconSize,
+            row * map.IconSize
+        ),
+
+        ImageRectSize = Vector2.new(
+            map.IconSize,
+            map.IconSize
         )
     }
 end
 
 function Library:SetIcon(imageLabel, iconName)
-    local icon = self:GetIcon(iconName)
+    local map = self.IconMap
+    local index = (map.Icons[iconName] or map.Icons.Placeholder) - 1
 
-    imageLabel.Image = icon.Image
-    imageLabel.ImageRectSize = icon.ImageRectSize
-    imageLabel.ImageRectOffset = icon.ImageRectOffset
+    imageLabel.BackgroundTransparency = 1
+    imageLabel.Image = map.MapId
+    imageLabel.ImageRectSize = Vector2.new(map.IconSize, map.IconSize)
+    imageLabel.ImageRectOffset = Vector2.new(
+        map.IconSize * (index % map.Height),
+        map.IconSize * math.floor(index / map.Height)
+    )
+    imageLabel.Size = UDim2.fromOffset(map.Width, map.Height)
+    imageLabel.ScaleType = Enum.ScaleType.Crop
 end
 
 return Library

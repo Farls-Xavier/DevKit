@@ -31,9 +31,8 @@ function Explorer.new(API, Library)
         local icon = Instance.new("ImageLabel")
         icon.Name = "Icon"
         icon.Parent = node
-        icon.BackgroundTransparency = 1
-        icon.Position = UDim2.fromOffset(4 + depth * 18, 2)
-        icon.Size = UDim2.fromOffset(18, 18)
+
+        self.Library:SetIcon(icon, instance.ClassName)
 
         self.Library:SetIcon(icon, instance.ClassName)
 
