@@ -16,10 +16,20 @@ local Services = setmetatable({}, {
     __index = function(_, service)
         return game:GetService(service)
     end
-}) 
+})
+
+local Defaults = {
+    Menu = {
+        Keybind = Enum.KeyCode.RightAlt
+    }
+}
+
+local HttpService = Services.HttpService
+
+
+--// UI
 
 local function createUi()
-
     local Loadersgui = Instance.new("ScreenGui")
     local Window = Instance.new("Frame")
     local Title = Instance.new("TextLabel")
@@ -80,13 +90,17 @@ local function createUi()
     end
 
     return ui
-
 end
+
+
+--// idk
 
 local function createBlur()
     local blurEffect = Instance.new("BlurEffect")
+
     blurEffect.Name = "devKit"
-    blurEffect.Enabled = false
+    blurEffect.Size = 0
+    blurEffect.Enabled = true
 
     local childAdded = getconnections(Services.Lighting.ChildAdded)
 
@@ -107,27 +121,67 @@ local function createBlur()
     return blurEffect
 end
 
-local function loadModule(path)
 
-    local source = httpget(url .. path)
-    return loadstring(source)()
+--// Settings
 
+local function merge(defaults, settings)
+    for i, v in pairs(defaults) do
+        if settings[i] == nil then
+            settings[i] = v
+        elseif type(v) == "table" and type(settings[i]) == "table" then
+            merge(v, settings[i])
+        end
+    end
+
+    return settings
 end
 
-function Loader.load()
+local function getSettings()
+    local path = "DevKit/settings.json"
 
+    if not isfile(path) then
+        writefile(path, HttpService:JSONEncode(Defaults))
+        return table.clone(Defaults)
+    end
+
+    local success, settings = pcall(function()
+        return HttpService:JSONDecode(readfile(path))
+    end)
+
+    if not success then
+        return table.clone(Defaults)
+    end
+
+    return merge(Defaults, settings)
+end
+
+
+--// Module loader
+
+local function loadModule(path)
+    local source = httpget(url .. path)
+    return loadstring(source)()
+end
+
+
+--// Loader
+
+function Loader.load()
     local ui = createUi()
     local blur = createBlur()
 
     if not isfolder("DevKit") then
         ui:SetStatus("Creating workspace.")
+
         makefolder("DevKit")
+        writefile("DevKit/settings.json", "{}")
         makefolder("DevKit/API")
     end
 
     local Loaded = {
         BlurEffect = blur,
-        Services = Services
+        Services = Services,
+        Settings = getSettings()
     }
 
     ui:SetStatus("Loading Library...")
@@ -137,8 +191,9 @@ function Loader.load()
     Loaded.Explorer = loadModule(modules.Explorer)
 
     ui:SetStatus("Loading Roblox API...")
-    
+
     local loadedAPI = loadModule(modules.API)
+
     Loaded.API = loadedAPI.Load(function(status)
         ui:SetStatus(status)
     end)
@@ -150,7 +205,7 @@ function Loader.load()
     end)
 
     return Loaded
-
 end
+
 
 return Loader
