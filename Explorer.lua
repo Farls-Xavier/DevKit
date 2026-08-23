@@ -235,25 +235,25 @@ function Explorer.new(Loaded)
         local children = object:GetChildren()
 
         if #children > 0 then
-            node.NodeActionIcon.Visible = true
+            node.Node.NodeActionIcon.Visible = true
         else
-            node.NodeActionIcon.Visible = false
+            node.Node.NodeActionIcon.Visible = false
         end
 
         if depth > 0 then
             local NodePadding = Instance.new("UIPadding")
-            NodePadding.Parent = node.Node
+            NodePadding.Parent = node.Node.Node
 
             NodePadding.PaddingLeft = UDim.new(0, node.Depth * 16)
         end
 
         node.Node.NodeActionIcon.MouseButton1Click:Connect(function()
             if node.Expanded then
-                self.Library:SetIcon(node.NodeActionIcon, "Expand", "MiscIconMap")
+                self.Library:SetIcon(node.Node.NodeActionIcon, "Expand", "MiscIconMap")
             else
-                self.Library:SetIcon(node.NodeActionIcon, "Collapse", "MiscIconMap")
+                self.Library:SetIcon(node.Node.NodeActionIcon, "Collapse", "MiscIconMap")
             end
-            
+
             node.Expanded = not node.Expanded
         end)
 
