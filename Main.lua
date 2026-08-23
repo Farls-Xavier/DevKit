@@ -30,7 +30,6 @@ UserInputService.InputBegan:Connect(function(input, busy)
     if busy then return end
 
     if input.KeyCode == Settigns.Menu.Keybind then
-        menuOpen = not menuOpen
 
         if menuOpen then
 
@@ -41,5 +40,7 @@ UserInputService.InputBegan:Connect(function(input, busy)
             TweenService:Create(BlurEffect, TweenInfo.new(.1), {Size = 12}):Play()
 
         end
+        
+        menuOpen = not menuOpen
     end
 end)

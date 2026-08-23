@@ -155,6 +155,15 @@ local function getSettings()
     return merge(Defaults, settings)
 end
 
+local function setSetting(setting, value)
+    local settings = getSettings()
+    local foundSetting = table.find(settings, setting)
+
+    if foundSetting then
+        foundSetting = value
+    end
+end
+
 
 --// Module loader
 
