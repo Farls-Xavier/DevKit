@@ -232,6 +232,14 @@ function Explorer.new(Loaded)
         node.Node.ObjectImage.ImageRectOffset = icon.ImageRectOffset
         node.Node.ObjectImage.ImageRectSize = icon.ImageRectSize
 
+        local children = object:GetChildren()
+
+        if #children > 0 then
+            node.NodeActionIcon.Visible = true
+        else
+            node.NodeActionIcon.Visible = false
+        end
+
         if depth > 0 then
             local NodePadding = Instance.new("UIPadding")
             NodePadding.Parent = node.Node
@@ -241,9 +249,9 @@ function Explorer.new(Loaded)
 
         node.Node.NodeActionIcon.MouseButton1Click:Connect(function()
             if node.Expanded then
-                for _, child in ipairs(node.Object:GetChildren()) do
-                    self:CreateChildNode(child, node)
-                end
+                self.Library:SetIcon(node.NodeActionIcon, "Expand", "MiscIconMap")
+            else
+                self.Library:SetIcon(node.NodeActionIcon, "Collapse", "MiscIconMap")
             end
             
             node.Expanded = not node.Expanded
@@ -262,23 +270,6 @@ function Explorer.new(Loaded)
         self.Nodes[object] = node
 
         return node
-    end
-
-    function self:CreateChildNode(object, parent)
-        local node = self:CreateNode(object, parent.Depth + 1)
-
-        node.Parent = parent
-        parent.Children[object] = node
-
-        return node
-    end
-
-    function self:ExpandNode(node)
-        node.Expanded = true
-
-        for i,v in pairs(node.Children) do
-            self:CreateNode()
-        end
     end
 
     for _, rootName in pairs(self.Roots) do

@@ -384,8 +384,8 @@ Library.MiscIconMap = {
 	}
 }
 
-function Library:GetIcon(iconName)
-    local map = self.IconMap
+function Library:GetIcon(iconName, mapName)
+    local map = self[mapName or "IconMap"]
 
     local index = map.Icons[iconName] or map.Icons.Class
     index -= 1
@@ -400,17 +400,12 @@ function Library:GetIcon(iconName)
     }
 end
 
-function Library:SetIcon(imageLabel, iconName)
-    local icon = self:GetIcon(iconName)
+function Library:SetIcon(imageLabel, iconName, mapName)
+    local icon = self:GetIcon(iconName, mapName)
 
-    imageLabel.BackgroundTransparency = 1
     imageLabel.Image = icon.Image
     imageLabel.ImageRectOffset = icon.ImageRectOffset
     imageLabel.ImageRectSize = icon.ImageRectSize
-    imageLabel.Size = UDim2.fromOffset(
-        self.IconMap.Width,
-        self.IconMap.Height
-    )
     imageLabel.ScaleType = Enum.ScaleType.Crop
 end
 
