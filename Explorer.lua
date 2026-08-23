@@ -37,7 +37,7 @@ function Explorer.new(Loaded)
         self.ExplorerScrolling = Instance.new("ScrollingFrame")
         self.ExplorerScrolling_UIListLayout = Instance.new("UIListLayout")
         self.Template_Node = Instance.new("Frame")
-        self.NodeActionIcon = Instance.new("ImageLabel")
+        self.NodeActionIcon = Instance.new("ImageButton")
         self.ObjectName = Instance.new("TextLabel")
         self.ObjectName_UIPadding = Instance.new("UIPadding")
         self.ObjectImage = Instance.new("ImageLabel")
@@ -208,34 +208,77 @@ function Explorer.new(Loaded)
         self.Window_UICorner.Parent = self.Window
     end
 
-    function self:CreateNode(object)
-        local node = self.Template_Node:Clone()
+    function self:CreateNode(object, depth)
+        depth = depth or 0
+        
+        local node = {}
 
-        node.Name = object:GetFullName()
-        node.Visible = true
-        node.Parent = self.ExplorerScrolling
+        node.Object = object
+        node.Node = self.Template_Node:Clone()
+        
+        node.Depth = depth
+        node.Expanded = false
+        node.Children = {}
 
-        node.ObjectName.Text = object.Name
+        node.Node.Name = object:GetFullName()
+        node.Node.Visible = true
+        node.Node.Parent = self.ExplorerScrolling
+
+        node.Node.ObjectName.Text = object.Name
 
         local icon = self.Library:GetIcon(object.ClassName)
 
-        node.ObjectImage.Image = icon.Image
-        node.ObjectImage.ImageRectOffset = icon.ImageRectOffset
-        node.ObjectImage.ImageRectSize = icon.ImageRectSize
+        node.Node.ObjectImage.Image = icon.Image
+        node.Node.ObjectImage.ImageRectOffset = icon.ImageRectOffset
+        node.Node.ObjectImage.ImageRectSize = icon.ImageRectSize
 
-        node.MouseEnter:Connect(function()
-            TweenService:Create(node, TweenInfo.new(.1), {BackgroundTransparency = .15}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
+        if depth > 0 then
+            local NodePadding = Instance.new("UIPadding")
+            NodePadding.Parent = node.Node
+
+            NodePadding.PaddingLeft = UDim.new(0, node.Depth * 16)
+        end
+
+        node.Node.NodeActionIcon.MouseButton1Click:Connect(function()
+            if node.Expanded then
+                for _, child in ipairs(node.Object:GetChildren()) do
+                    self:CreateChildNode(child, node)
+                end
+            end
+            
+            node.Expanded = not node.Expanded
         end)
 
-        node.MouseLeave:Connect(function()
-            TweenService:Create(node, TweenInfo.new(.1), {BackgroundTransparency = 1}):Play()
-            TweenService:Create(node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(139, 147, 161)}):Play()
+        node.Node.MouseEnter:Connect(function()
+            TweenService:Create(node.Node, TweenInfo.new(.1), {BackgroundTransparency = .15}):Play()
+            TweenService:Create(node.Node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
+        end)
+
+        node.Node.MouseLeave:Connect(function()
+            TweenService:Create(node.Node, TweenInfo.new(.1), {BackgroundTransparency = 1}):Play()
+            TweenService:Create(node.Node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(139, 147, 161)}):Play()
         end)
 
         self.Nodes[object] = node
 
         return node
+    end
+
+    function self:CreateChildNode(object, parent)
+        local node = self:CreateNode(object, parent.Depth + 1)
+
+        node.Parent = parent
+        parent.Children[object] = node
+
+        return node
+    end
+
+    function self:ExpandNode(node)
+        node.Expanded = true
+
+        for i,v in pairs(node.Children) do
+            self:CreateNode()
+        end
     end
 
     for _, rootName in pairs(self.Roots) do
