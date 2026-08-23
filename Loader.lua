@@ -20,7 +20,7 @@ local Services = setmetatable({}, {
 
 local Defaults = {
     Menu = {
-        Keybind = Enum.KeyCode.RightAlt
+        Keybind = Enum.KeyCode.RightAlt.Name
     }
 }
 

@@ -29,7 +29,7 @@ local menuOpen = false
 UserInputService.InputBegan:Connect(function(input, busy)
     if busy then return end
 
-    if input.KeyCode == Settigns.Menu.Keybind then
+    if input.KeyCode == Enum.KeyCode[Loaded.Settings.Menu.Keybind] then
 
         if menuOpen then
 
