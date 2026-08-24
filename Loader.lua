@@ -21,6 +21,25 @@ local Services = setmetatable({}, {
 local Defaults = {
     Menu = {
         Keybind = Enum.KeyCode.RightAlt.Name
+    },
+
+    Explorer = {
+        Root_Services = {
+            "Workspace",
+            "Players",
+            "CoreGui",
+            "Lighting",
+            "NetworkClient",
+            "ReplicatedFirst",
+            "ReplicatedStorage",
+            "StarterGui",
+            "StarterPack",
+            "StarterPlayer",
+            "Teams",
+            "SoundService",
+            "Chat",
+            "TextChatService",
+        }
     }
 }
 

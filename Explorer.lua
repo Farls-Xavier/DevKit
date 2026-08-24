@@ -258,7 +258,7 @@ function Explorer.new(Loaded)
         end)
 
         node.Node.MouseEnter:Connect(function()
-            TweenService:Create(node.Node, TweenInfo.new(.1), {BackgroundTransparency = .15}):Play()
+            TweenService:Create(node.Node, TweenInfo.new(.1), {BackgroundTransparency = .1}):Play()
             TweenService:Create(node.Node.ObjectName, TweenInfo.new(.1), {TextColor3 = Color3.fromRGB(230, 233, 239)}):Play()
         end)
 
