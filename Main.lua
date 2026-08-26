@@ -7,7 +7,7 @@ local function Load(path)
     return loadstring(source)()
 end
 
-local Loaded = Load("/Loader.lua").load()
+local Loaded = Load("/Loader.lua").Load()
 
 local API = Loaded.API
 
