@@ -11,7 +11,22 @@ function Explorer.new(Loaded)
     self.Services = Loaded.Services
 
     self.Nodes = {}
-    self.Roots = self.Settings.Root_Services
+    self.Roots = {
+        "Workspace",
+        "Players",
+        "CoreGui",
+        "Lighting",
+        "NetworkClient",
+        "ReplicatedFirst",
+        "ReplicatedStorage",
+        "StarterGui",
+        "StarterPack",
+        "StarterPlayer",
+        "Teams",
+        "SoundService",
+        "Chat",
+        "TextChatService",
+    }
 
     local TweenService = self.Services.TweenService
 
