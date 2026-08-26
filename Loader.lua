@@ -20,7 +20,7 @@ local Services = setmetatable({}, {
 
 local Defaults = {
     Menu = {
-        Keybind = Enum.KeyCode.RightAlt.Name
+        Keybind = "RightAlt"
     },
 
     Explorer = {
@@ -168,10 +168,15 @@ local function getSettings()
     end)
 
     if not success then
+        writefile(path, HttpService:JSONEncode(Defaults))
         return table.clone(Defaults)
     end
 
-    return merge(Defaults, settings)
+    settings = merge(Defaults, settings)
+
+    writefile(path, HttpService:JSONEncode(settings))
+
+    return settings
 end
 
 local function setSetting(setting, value)
