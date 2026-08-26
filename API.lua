@@ -2,13 +2,7 @@
 
 local API = {}
 
-local Services = setmetatable({}, {
-    __index = function(_, service)
-        return game:GetService(service)
-    end
-})
-
-function API.Load(Status)
+function API.Load(Status, Services)
 
     Status("Checking Roblox Version")
 
@@ -61,7 +55,6 @@ function API.Load(Status)
         newClass.Callbacks = {}
         newClass.Tags = {}
 
-        -- Class tags
         if class.Tags then
             for _, tag in pairs(class.Tags) do
                 newClass.Tags[tag] = true
@@ -136,7 +129,6 @@ function API.Load(Status)
         classes[class.Name] = newClass
     end
 
-    -- Convert superclass names into actual class references.
     for _, class in pairs(classes) do
         if class.Superclass then
             class.Superclass = classes[class.Superclass]

@@ -7,44 +7,19 @@ local test_delay = 0.75
 local url = "https://raw.githubusercontent.com/Farls-Xavier/DevKit/refs/heads/main"
 
 local modules = {
+    API = "/API.lua",
     Library = "/Library.lua",
     Explorer = "/Explorer.lua",
-    API = "/API.lua"
+    Settings = "/Settings.lua"
 }
 
 local Services = setmetatable({}, {
     __index = function(_, service)
-        return game:GetService(service)
+        return cloneref(game:GetService(service))
     end
 })
 
-local Defaults = {
-    Menu = {
-        Keybind = "RightAlt"
-    },
-
-    Explorer = {
-        Root_Services = {
-            "Workspace",
-            "Players",
-            "CoreGui",
-            "Lighting",
-            "NetworkClient",
-            "ReplicatedFirst",
-            "ReplicatedStorage",
-            "StarterGui",
-            "StarterPack",
-            "StarterPlayer",
-            "Teams",
-            "SoundService",
-            "Chat",
-            "TextChatService",
-        }
-    }
-}
-
 local HttpService = Services.HttpService
-
 
 --// UI
 
@@ -199,7 +174,7 @@ end
 
 --// Loader
 
-function Loader.load()
+function Loader.Load()
     local ui = createUi()
     local blur = createBlur()
 
@@ -207,14 +182,12 @@ function Loader.load()
         ui:SetStatus("Creating workspace.")
 
         makefolder("DevKit")
-        writefile("DevKit/settings.json", "{}")
         makefolder("DevKit/API")
     end
 
     local Loaded = {
         BlurEffect = blur,
-        Services = Services,
-        Settings = getSettings()
+        Services = Services
     }
 
     ui:SetStatus("Loading Library...")
@@ -223,13 +196,18 @@ function Loader.load()
     ui:SetStatus("Loading Explorer...")
     Loaded.Explorer = loadModule(modules.Explorer)
 
+    ui:SetStatus("Loading Settings...")
+
+    local loadedSettings = loadModule(modules.Settings)
+    Loaded.Settings = loadedSettings
+
     ui:SetStatus("Loading Roblox API...")
 
     local loadedAPI = loadModule(modules.API)
 
     Loaded.API = loadedAPI.Load(function(status)
         ui:SetStatus(status)
-    end)
+    end, Services)
 
     ui:SetStatus("Done loading")
 

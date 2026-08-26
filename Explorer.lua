@@ -7,26 +7,11 @@ function Explorer.new(Loaded)
 
     self.API = Loaded.API
     self.Library = Loaded.Library
+    self.Settings = Loaded.Settings
     self.Services = Loaded.Services
 
     self.Nodes = {}
-
-    self.Roots = { -- add more if i need ill make a config for this too
-        "Workspace",
-        "Players",
-        "CoreGui",
-        "Lighting",
-        "NetworkClient",
-        "ReplicatedFirst",
-        "ReplicatedStorage",
-        "StarterGui",
-        "StarterPack",
-        "StarterPlayer",
-        "Teams",
-        "SoundService",
-        "Chat",
-        "TextChatService",
-    }
+    self.Roots = self.Settings.Root_Services
 
     local TweenService = self.Services.TweenService
 
@@ -273,7 +258,7 @@ function Explorer.new(Loaded)
     end
 
     for _, rootName in pairs(self.Roots) do
-        local object = game:FindFirstChild(rootName)
+        local object = self.Services[rootName]
 
         if object then
             self:CreateNode(object)
