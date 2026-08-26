@@ -7,7 +7,7 @@ function Explorer.new(Loaded)
 
     self.API = Loaded.API
     self.Library = Loaded.Library
-    self.Settings = Loaded.Settings
+    --self.Settings = Loaded.Settings
     self.Services = Loaded.Services
 
     self.Nodes = {}
